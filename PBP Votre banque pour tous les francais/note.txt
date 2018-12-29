@@ -1,0 +1,16 @@
+meta html balise utf8
+
+pour implementer la verification login utiliser la SESSION PHP avec ce code:
+$_SESSION['user'] = $user;
+session_start();
+$_SESSION['user']['pseudo']
+
+corriger fail injecton sql:
+utiliser :email ou ?
+puis injecter dans methode execute
+https://websitebeaver.com/php-pdo-prepared-statements-to-prevent-sql-injection
+
+pour les urls redirect:
+https://docs.ovh.com/fr/hosting/htaccess-reecriture-url-mod-rewrite/
+.htaccess
+mod_rewrite
