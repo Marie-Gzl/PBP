@@ -19,6 +19,7 @@ include '../modules/is-logged-in.php';?>
 
 $bdd = new PDO('mysql:host=localhost;dbname=pbp;charset=utf8', 'root', '');
 
+// Si la requpete contient les paramètres nécessaires à la création d'un compte
 if (isset( $_POST["email"],$_POST["password"], $_POST["type"], $_POST["nom"], $_POST["prenom"], $_POST["adresse"],
     $_POST["date_naissance"], $_POST["telephone"], $_POST["agence"])) {
     $reqInsertClient = $bdd->prepare(

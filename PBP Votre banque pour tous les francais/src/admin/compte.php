@@ -35,6 +35,7 @@ $reqCompte = $bdd->prepare("SELECT compte.*, agence.* FROM compte as compte JOIN
 $reqCompte->execute([":idCompte" => $idCompte]);
 $compte = $reqCompte->fetch(PDO::FETCH_OBJ);
 
+// On assemble les différentes parties de l'iban
 $iban=$compte->cd_pays . $compte->cle_iban . $compte->cd_banque . $compte->cd_guichet . $compte->numero_compte . $compte->cle_rib;
 
 //Operations

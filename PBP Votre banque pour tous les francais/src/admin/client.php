@@ -15,6 +15,7 @@ include '../modules/is-logged-in.php';?>
     <?php include '../modules/navbar-admin.php';?>
 
     <?php
+// On se connecte à la bdd
 $bdd = new PDO('mysql:host=localhost;dbname=pbp;charset=utf8', 'root', '');
 
 // -----------------------------
@@ -22,11 +23,15 @@ $bdd = new PDO('mysql:host=localhost;dbname=pbp;charset=utf8', 'root', '');
 // Initialisation des données
 // -----------------------------
 // -----------------------------
+// On récupère l'ID passé dans la requête GET
 $idClient = $_GET['client'];
 
 //Client
+// On prépare la requête
 $reqClient = $bdd->prepare("SELECT client.*, agence.* FROM client as client JOIN agence as agence on agence.id_agence = client.id_agence WHERE client.id_client = :idClient");
+// On l'éxecute
 $reqClient->execute([":idClient" => $idClient]);
+// On met de côté le résultat
 $client = $reqClient->fetch(PDO::FETCH_OBJ);
 
 //Comptes
@@ -54,7 +59,9 @@ $demandes = $reqDemandes->fetchAll(PDO::FETCH_OBJ);
 // Methodes insert et updates
 // -----------------------------
 // -----------------------------
+// Si un paramètre 'bdObject' a été passé avec la requête POST
 if (isset($_POST['dbObject']) ){
+    // Si ce paramètre contient la valeur 'client'
     if ($_POST['dbObject'] == 'client') {
         $reqUpdateClient = $bdd->prepare(
             "UPDATE client" .
@@ -145,6 +152,7 @@ if (isset($_GET['deleteBeneficiaire']) ){
     $reqDeleteBeneficiare->execute([
         ":idBeneficiaire" => $_GET['deleteBeneficiaire'],
     ]);
+// On redirige le client vers une autre page avec son ID en paramètre GET 
 header('Location:client.php?client=' . $idClient);
 }
 
