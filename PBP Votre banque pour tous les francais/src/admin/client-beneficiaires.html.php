@@ -16,12 +16,14 @@
       <tbody>
 
         <?php
+// On ajoute une ligne par bénéficiaire
 foreach ($beneficiaires as $iter) {
     echo '<tr>';
     echo '<td>' . $iter->libelle . '</td>';
     echo '<td>' . $iter->iban . '</td>';
     echo '<td>' . $iter->date_ajout . '</td>';
     echo '<td>' . ($iter->valide == 1 ? 'oui':'non') . '</td>';
+    // En fonction de si le bénéficiaire est valide ou non, on affiche un élément différent
     echo '<td>' . 
     ($iter->valide == 1 ? 
         '<i class="fas fa-trash-alt" onclick="confirmDelete(\''.$iter->libelle.'\', \''.$iter->id_beneficiaire.'\')"></i>'

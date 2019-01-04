@@ -32,16 +32,17 @@
           </thead>
           <tbody>
             <?php
-  foreach ($operations as $operation) {
-echo '<tr>';
-echo '<td>'.$operation->description.'</td>';
-if ($operation->compte_debit==$compteId){
-  echo '<td style="color: red">- '.$operation->montant.' €</td>';
-}else {
-  echo '<td style="color: green">+ '.$operation->montant.' €</td>';
-}
-echo '</tr>';
+// On affiche la liste des opérations
+foreach ($operations as $operation) {
+  echo '<tr>';
+  echo '<td>'.$operation->description.'</td>';
+  if ($operation->compte_debit==$compteId){
+    echo '<td style="color: red">- '.$operation->montant.' €</td>';
+  }else {
+    echo '<td style="color: green">+ '.$operation->montant.' €</td>';
   }
+  echo '</tr>';
+}
             ?>
           </tbody>
         </table>

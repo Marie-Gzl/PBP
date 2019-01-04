@@ -12,10 +12,12 @@ session_start();
 // Accès à la base de données
 $bdd = new PDO('mysql:host=localhost;dbname=pbp;charset=utf8', 'root', '');
 
+// On récupère la liste des agences
 $reqAgences = $bdd->prepare("SELECT * FROM agence");
 $reqAgences->execute();
 $agences = $reqAgences->fetchAll(PDO::FETCH_OBJ);
 
+// Si on a reçu les paramètres nécessaires à la création d'un compte
 if (isset( $_POST["email"],$_POST["password"], $_POST["type"], $_POST["nom"], $_POST["prenom"], $_POST["adresse"],
     $_POST["date_naissance"], $_POST["telephone"], $_POST["agence"])) {
         // On commence avec la création du client
@@ -37,6 +39,7 @@ if (isset( $_POST["email"],$_POST["password"], $_POST["type"], $_POST["nom"], $_
             ":agence" => $_POST["agence"],
         ]);
 
+        // On récupère l'id du client fraîchement créé
         $insertedClientId=$bdd->lastInsertId();
 
 

@@ -1,6 +1,7 @@
 <?php
 $bdd = new PDO('mysql:host=localhost;dbname=pbp;charset=utf8', 'root', '');
 
+// On récupère la liste des agences
 $reqAgences = $bdd->prepare("SELECT * FROM agence");
 $reqAgences->execute();
 $agences = $reqAgences->fetchAll(PDO::FETCH_OBJ);
@@ -91,6 +92,7 @@ $agences = $reqAgences->fetchAll(PDO::FETCH_OBJ);
             </div>
             <select class="form-control" name="agence">
               <?php
+              // On ajoute chaque agence comme option
               foreach ($agences as $iter) {
                   echo '<option value='.$iter->id_agence.'>' . $iter->description . '</option>';
               }

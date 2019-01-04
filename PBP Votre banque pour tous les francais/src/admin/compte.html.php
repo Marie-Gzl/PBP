@@ -41,6 +41,7 @@
     </thead>
     <tbody>
         <?php
+// On ajoute une ligne par opération en base
 foreach ($operations as $iter) {
     echo '<tr>';
     echo '<td>' . ($iter->compte_debit == $idCompte ? 'Débit' : 'Crédit') . '</td>';

@@ -11,9 +11,12 @@ session_start();
 // Accès à la base de données
 $bdd = new PDO('mysql:host=localhost;dbname=pbp;charset=utf8', 'root', '');
 
+// Si on a bien reçu les paramètres nécessaires à l'authentification
 if (isset($_POST["login"], $_POST["password"])) {
+    // Alors on cherche le compte
     $req = $bdd->prepare("SELECT * FROM admin WHERE login = :login AND password = :password");
     $req->execute([':login' => $_POST["login"], ':password' => $_POST["password"]]);
+    // Si il existe
     if ($req->rowCount() == 1) {
         // On stock le client de base de données dans un cookie de session
         $result = $req->fetch(PDO::FETCH_OBJ);

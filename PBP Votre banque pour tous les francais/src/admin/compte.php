@@ -30,7 +30,7 @@ $idCompte = $_GET['compte'];
 //$reqClient->execute([":idClient" => $idClient]);
 //$client = $reqClient->fetch(PDO::FETCH_OBJ);
 
-//Comptes
+//On récupère le compte grâce à son id
 $reqCompte = $bdd->prepare("SELECT compte.*, agence.* FROM compte as compte JOIN agence as agence on agence.id_agence = compte.id_agence  WHERE id_compte = :idCompte");
 $reqCompte->execute([":idCompte" => $idCompte]);
 $compte = $reqCompte->fetch(PDO::FETCH_OBJ);
@@ -38,7 +38,7 @@ $compte = $reqCompte->fetch(PDO::FETCH_OBJ);
 // On assemble les différentes parties de l'iban
 $iban=$compte->cd_pays . $compte->cle_iban . $compte->cd_banque . $compte->cd_guichet . $compte->numero_compte . $compte->cle_rib;
 
-//Operations
+// On récupère les opérations liées au compte (versements et débits)
 $reqOperations = $bdd->prepare("SELECT * FROM operation WHERE type = 'VERSEMENT' AND compte_debit = :idCompte OR compte_credit = :idCompte ORDER BY date_execution DESC");
 $reqOperations->execute([":idCompte" => $idCompte]);
 $operations = $reqOperations->fetchAll(PDO::FETCH_OBJ);
@@ -48,23 +48,29 @@ $operations = $reqOperations->fetchAll(PDO::FETCH_OBJ);
 // Methodes insert et updates
 // -----------------------------
 // -----------------------------
+// Si on a reçu un paramètre dbObject avec la requête
 if (isset($_POST['dbObject']) ){
+    // Si on souhaite effectuer une nouvelle opération
     if ($_POST['dbObject'] == 'operation') {
         $montantOperation = $_POST['montant'];
         $destinataireOperation = $_POST['destinataire'];
-
+        
+        // On vérifie que l'on a les fonds nécessaires à cette opération
         if ($montantOperation > $compte->solde) {
             echo "<script>alert(\"Transaction impossible montant trop élevé\")</script>"; 
         }
 
+        // On cherche le destinataire
         $reqFindCompteForIban =  $bdd->prepare("SELECT * FROM compte WHERE iban = :iban");
         $reqFindCompteForIban->execute([":iban"=>$destinataireOperation]);
         $compteDestinataire = $reqFindCompteForIban->fetch(PDO::FETCH_OBJ);
 
+        // Si il n'existe pas...
         if ($reqFindCompteForIban->rowCount() != 1){
             echo "<script>alert(\"Le compte destinataire n'existe pas\")</script>"; 
         }
         else {
+            // Sinon, on enregistre l'opétation
             $reqInsertOperation = $bdd->prepare(
                 "INSERT INTO operation (compte_debit, compte_credit, type, date_execution, montant, description)".
                 "VALUES(:compteDebit, :compteCredit, :type, :dateExecution, :montant, :description)");
@@ -78,6 +84,7 @@ if (isset($_POST['dbObject']) ){
                 ":description"=>$_POST["description"],
             ]);
 
+            // Et on met à jour les soldes
             $soldeDestinataire = $compteDestinataire->solde + $montantOperation;
             $soldeSource = $compte->solde - $montantOperation;
 

@@ -53,17 +53,18 @@
         </thead>
         <tbody>
           <?php
-  foreach ($operations as $operation) {
-echo '<tr>';
-echo '<td>'.$operation->date_execution.'</td>';
-if ($operation->compte_debit==$compte->id_compte){
-  echo '<td style="color: red">- '.$operation->montant.' €</td>';
-}else {
-  echo '<td style="color: green">+ '.$operation->montant.' €</td>';
-}
-echo '<td>'.$operation->description.'</td>';
-echo '</tr>';
+// On affiche la liste des opérations
+foreach ($operations as $operation) {
+  echo '<tr>';
+  echo '<td>'.$operation->date_execution.'</td>';
+  if ($operation->compte_debit==$compte->id_compte){
+    echo '<td style="color: red">- '.$operation->montant.' €</td>';
+  }else {
+    echo '<td style="color: green">+ '.$operation->montant.' €</td>';
   }
+  echo '<td>'.$operation->description.'</td>';
+  echo '</tr>';
+}
             ?>
         </tbody>
       </table>

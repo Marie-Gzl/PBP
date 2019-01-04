@@ -18,6 +18,7 @@
     </thead>
     <tbody>
       <?php
+// On ajoute une ligne par client
 foreach ($clients as $iter) {
     echo '<tr>';
     echo '<td>' . $iter->type . '</td>';

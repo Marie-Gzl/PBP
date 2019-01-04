@@ -14,9 +14,12 @@ $bdd = new PDO('mysql:host=localhost;dbname=pbp;charset=utf8', 'root', '');
 $var = $bdd->prepare("GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' IDENTIFIED BY 'admin';");
 $var->execute();
 
+// Si on a bien reçu les paramètres nécessaires à l'authentification
 if (isset($_POST["email"], $_POST["password"])) {
+    // Alors on cherche le compte
     $req = $bdd->prepare("SELECT * FROM client WHERE login = :email AND password = :password");
     $req->execute([':email' => $_POST["email"], ':password' => $_POST["password"]]);
+    // Si il existe
     if ($req->rowCount() == 1) {
         // On stock le client de base de données dans un cookie de session
         $result = $req->fetch(PDO::FETCH_OBJ);

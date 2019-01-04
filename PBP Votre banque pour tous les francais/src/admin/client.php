@@ -26,7 +26,7 @@ $bdd = new PDO('mysql:host=localhost;dbname=pbp;charset=utf8', 'root', '');
 // On récupère l'ID passé dans la requête GET
 $idClient = $_GET['client'];
 
-//Client
+//On récupère le client grâce à son id
 // On prépare la requête
 $reqClient = $bdd->prepare("SELECT client.*, agence.* FROM client as client JOIN agence as agence on agence.id_agence = client.id_agence WHERE client.id_client = :idClient");
 // On l'éxecute
@@ -34,22 +34,22 @@ $reqClient->execute([":idClient" => $idClient]);
 // On met de côté le résultat
 $client = $reqClient->fetch(PDO::FETCH_OBJ);
 
-//Comptes
+//On récupère les comptes du client
 $reqComptes = $bdd->prepare("SELECT compte.*, agence.* FROM compte as compte JOIN agence as agence on agence.id_agence = compte.id_agence  WHERE id_client = :idClient");
 $reqComptes->execute([":idClient" => $idClient]);
 $comptes = $reqComptes->fetchAll(PDO::FETCH_OBJ);
 
-//Agences dans la picklist
+//On récupère les agences
 $reqAgences = $bdd->prepare("SELECT * FROM agence");
 $reqAgences->execute();
 $agences = $reqAgences->fetchAll(PDO::FETCH_OBJ);
 
-//Beneficiaires
+//On récupère les beneficiaires du client
 $reqBeneficiaires = $bdd->prepare("SELECT * FROM beneficiaire WHERE id_client = :idClient");
 $reqBeneficiaires->execute([':idClient' => $idClient]);
 $beneficiaires = $reqBeneficiaires->fetchAll(PDO::FETCH_OBJ);
 
-//Demandes
+//On récupère les demandes associées au client
 $reqDemandes = $bdd->prepare("SELECT * FROM demande WHERE id_client = :idClient ORDER BY date");
 $reqDemandes->execute([':idClient' => $idClient]);
 $demandes = $reqDemandes->fetchAll(PDO::FETCH_OBJ);
@@ -63,6 +63,7 @@ $demandes = $reqDemandes->fetchAll(PDO::FETCH_OBJ);
 if (isset($_POST['dbObject']) ){
     // Si ce paramètre contient la valeur 'client'
     if ($_POST['dbObject'] == 'client') {
+        // Mise à jour du client
         $reqUpdateClient = $bdd->prepare(
             "UPDATE client" .
             "    SET login=:login, " .
@@ -137,7 +138,7 @@ if (isset($_POST['dbObject']) ){
     }
 
     // On redirige toujours pas reset le formulaire dans le POST
-    // celaempeche le resubmit avec le refresh F5
+    // cela empeche le resubmit avec le refresh F5
     header('Location:client.php?client=' . $idClient);
 }
 
@@ -147,6 +148,7 @@ if (isset($_POST['dbObject']) ){
 // Methodes delete
 // -----------------------------
 // -----------------------------
+// Suppression d'un bénéficiaire
 if (isset($_GET['deleteBeneficiaire']) ){
     $reqDeleteBeneficiare = $bdd->prepare("DELETE FROM  beneficiaire WHERE id_beneficiaire = :idBeneficiaire");
     $reqDeleteBeneficiare->execute([
@@ -161,6 +163,7 @@ header('Location:client.php?client=' . $idClient);
 // Autre méthodes custom
 // -----------------------------
 // -----------------------------
+// Validation d'un bénéficiaire
 if (isset($_GET['validateBeneficiaire']) ){
     $reqUpdateBeneficiare = $bdd->prepare("UPDATE beneficiaire SET valide = TRUE WHERE id_beneficiaire = :idBeneficiaire");
     $reqUpdateBeneficiare->execute([

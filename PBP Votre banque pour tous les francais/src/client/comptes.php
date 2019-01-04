@@ -19,11 +19,13 @@
         // Accès à la base de données
         $bdd = new PDO('mysql:host=localhost;dbname=pbp;charset=utf8', 'root', '');
 
+        // On récupère les comptes chèque
         $reqCheque=$bdd->prepare("SELECT * FROM compte WHERE id_client = :idClient AND type = 'cheque'");
         $reqCheque->execute([':idClient' => $_SESSION["connectedUser"]->id_client]);
         $comptesCheque = $reqCheque->fetchAll(PDO::FETCH_OBJ);
 //        var_dump($comptesCheque);
 
+        // On récupère les comptes épargne
         $reqEpargne=$bdd->prepare("SELECT * FROM compte WHERE id_client = :idClient AND type = 'epargne'");
         $reqEpargne->execute([':idClient' => $_SESSION["connectedUser"]->id_client]);
         $comptesEpargne = $reqEpargne->fetchAll(PDO::FETCH_OBJ);

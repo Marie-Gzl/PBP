@@ -81,6 +81,7 @@
             </div>
             <select class="form-control" name="agence">
               <?php
+// On ajoute une option par agence avec l'agence principale du client sélectionnée par défaut
 foreach ($agences as $iter) {
     if ($iter->id_agence == $client->id_agence) {
         echo '<option selected value=' . $iter->id_agence . '>' . $iter->description . '</option>';

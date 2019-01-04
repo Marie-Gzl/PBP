@@ -17,6 +17,7 @@
     </thead>
     <tbody>
       <?php
+// On ajoute une ligne par agence
 foreach ($agences as $iter) {
     echo '<tr>';
     echo '<td>' . $iter->id_agence . '</td>';

@@ -21,6 +21,7 @@
       </thead>
       <tbody>
         <?php
+// On ajoute une ligne au tableau par bénéficiaire valide
 foreach ($beneficiairesValide as $iter) {
     echo '<tr>';
     echo '<td>' . $iter->libelle . '</td>';
@@ -62,6 +63,7 @@ foreach ($beneficiairesValide as $iter) {
       </thead>
       <tbody>
         <?php
+// On ajoute une ligne au tableau par bénéficiaire en attente
 foreach ($beneficiairesAttente as $iter) {
     echo '<tr>';
     echo '<td>' . $iter->libelle . '</td>';

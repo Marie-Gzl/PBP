@@ -11,6 +11,7 @@
     </thead>
     <tbody>
       <?php
+// On ajoute une ligne par demande
 foreach ($demandes as $iter) {
     echo '<tr>';
     echo '<td>' . $iter->date . '</td>';

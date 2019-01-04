@@ -20,6 +20,7 @@
     </thead>
     <tbody>
       <?php
+// On ajoute une ligne par compte
 foreach ($comptes as $iter) {
     echo '<tr>';
     echo '<td>' . $iter->id_compte . '</td>';
